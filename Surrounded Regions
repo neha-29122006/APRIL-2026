@@ -1,0 +1,45 @@
+from collections import deque
+
+class Solution:
+    def solve(self, board: list[list[str]]) -> None:
+        if not board or not board[0]:
+            return
+        
+        m, n = len(board), len(board[0])
+        
+        def run(r, c):
+            q = deque([(r, c)])
+            board[r][c] = 'A'
+            while q:
+                x, y = q.popleft()
+                if x > 0 and board[x - 1][y] == 'O':
+                    board[x - 1][y] = 'A'
+                    q.append((x - 1, y))
+                if x < m - 1 and board[x + 1][y] == 'O':
+                    board[x + 1][y] = 'A'
+                    q.append((x + 1, y))
+                if y > 0 and board[x][y - 1] == 'O':
+                    board[x][y - 1] = 'A'
+                    q.append((x, y - 1))
+                if y < n - 1 and board[x][y + 1] == 'O':
+                    board[x][y + 1] = 'A'
+                    q.append((x, y + 1))
+        
+        for i in range(m):
+            if board[i][0] == 'O':
+                run(i, 0)
+            if board[i][n - 1] == 'O':
+                run(i, n - 1)
+        
+        for j in range(n):
+            if board[0][j] == 'O':
+                run(0, j)
+            if board[m - 1][j] == 'O':
+                run(m - 1, j)
+        
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] == 'O':
+                    board[i][j] = 'X'
+                elif board[i][j] == 'A':
+                    board[i][j] = 'O'
