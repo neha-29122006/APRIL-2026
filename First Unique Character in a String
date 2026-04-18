@@ -1,0 +1,16 @@
+class Solution:
+    def firstUniqChar(self, s: str) -> int:
+        pos = {}
+        
+        for i, ch in enumerate(s):
+            if ch in pos:
+                pos[ch] = -1
+            else:
+                pos[ch] = i
+        
+        res = len(s)
+        for index in pos.values():
+            if index != -1 and index < res:
+                res = index
+        
+        return res if res != len(s) else -1
