@@ -1,0 +1,26 @@
+class Solution:
+    def canIWin(self, maxChoosableInteger: int, desiredTotal: int) -> bool:
+        if desiredTotal <= 0:
+            return True
+        
+        total = (maxChoosableInteger * (maxChoosableInteger + 1)) // 2
+        if total < desiredTotal:
+            return False
+        
+        memo = {}
+        
+        def dfs(used, remain):
+            if used in memo:
+                return memo[used]
+            
+            for i in range(1, maxChoosableInteger + 1):
+                bit = 1 << i
+                if not used & bit:
+                    if i >= remain or not dfs(used | bit, remain - i):
+                        memo[used] = True
+                        return True
+            
+            memo[used] = False
+            return False
+        
+        return dfs(0, desiredTotal)
