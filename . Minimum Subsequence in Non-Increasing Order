@@ -1,0 +1,12 @@
+class Solution:
+    def minSubsequence(self, nums):
+        nums.sort(reverse=True)
+        res = []
+        total = sum(nums)
+        cur = 0
+        for num in nums:
+            cur += num
+            res.append(num)
+            if cur > total - cur:
+                break
+        return res
