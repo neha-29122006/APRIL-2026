@@ -1,0 +1,32 @@
+class Solution:
+    def countRangeSum(self, nums, lower, upper):
+        def merge_sort(prefix):
+            if len(prefix) <= 1:
+                return 0
+            
+            mid = len(prefix) // 2
+            left = prefix[:mid]
+            right = prefix[mid:]
+            
+            count = merge_sort(left) + merge_sort(right)
+            
+            # count valid ranges
+            j = k = 0
+            for left_val in left:
+                while k < len(right) and right[k] - left_val < lower:
+                    k += 1
+                while j < len(right) and right[j] - left_val <= upper:
+                    j += 1
+                count += j - k
+            
+            # merge step
+            prefix[:] = sorted(left + right)
+            
+            return count
+        
+        # prefix sum array
+        prefix = [0]
+        for num in nums:
+            prefix.append(prefix[-1] + num)
+        
+        return merge_sort(prefix)
